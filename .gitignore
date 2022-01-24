@@ -3,6 +3,8 @@ bin-debug/
 bin-release/
 [Oo]bj/
 [Bb]in/
+FlowField/FlowField/Library/
+FlowField/FlowField/Temp/
 
 # Other files and folders
 .settings/
