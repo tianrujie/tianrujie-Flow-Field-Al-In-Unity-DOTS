@@ -163,7 +163,7 @@
       "url": "https://packages.unity.cn"
     },
     "com.unity.physics": {
-      "version": "file:/Users/tianrujie/WareHouse/Flow-Field-Al-In-Unity-DOTS/FlowField/Package/com.unity.physics@0.2.4-preview",
+      "version": "file:/Users/tianrujie/WareHouse/tianrujie-Flow-Field-Al-In-Unity-DOTS/FlowField/Package/com.unity.physics@0.2.4-preview",
       "depth": 0,
       "source": "local",
       "dependencies": {
