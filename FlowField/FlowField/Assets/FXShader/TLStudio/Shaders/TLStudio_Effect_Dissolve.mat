@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TLStudio_Effect_Dissolve
+  m_Shader: {fileID: 4800000, guid: d679bc2eccdd39e478dc0d2457cb3c38, type: 3}
+  m_ShaderKeywords: _MAINTEXUVCUSTOM_ON _SIDEWIDTHCUSTOM_ON _USECUSTOM_ON _USEEXPOSUREFX_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: ddc57556d58d5bd4d98a372e3cbc88f4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 1.12, y: 0}
+    - _MainTexture:
+        m_Texture: {fileID: 2800000, guid: 39e82328a7194b644aacd1e7c343a359, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise:
+        m_Texture: {fileID: 2800000, guid: 32637ed42f96b5246b5912aa79cb1391, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _mask:
+        m_Texture: {fileID: 2800000, guid: 9a460d5f3bac68645b3de3032eb29cd8, type: 3}
+        m_Scale: {x: 1.63, y: 1}
+        m_Offset: {x: 1.34, y: 0}
+    m_Floats:
+    - _Blend: 10
+    - _ColorLight: 1
+    - _Cutoff: 0.194
+    - _Dissolve: -0.093
+    - _Frequency: 1
+    - _MainTexUVCustom: 1
+    - _NoiseMulti: 0.36
+    - _NoiseUVRollUseTime: 0
+    - _Shininess: 0.7
+    - _SideColorLight: 1
+    - _SideWidth: 0.0328
+    - _SideWidthCustom: 1
+    - _UseCustom: 1
+    - _UseExposureFX: 1
+    - _WaveDirection: 0
+    - _WaveScale: 0
+    - _WaveSpeed: 0
+    - _ZWrite0: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Emission: {r: 0, g: 0, b: 0, a: 0}
+    - _MainTexUVRoll: {r: 0, g: 0, b: 0, a: 0}
+    - _NoiseUVRoll: {r: 0, g: 0, b: 0, a: 0}
+    - _SideColor: {r: 1, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 0}

@@ -1,0 +1,4 @@
+this is a text config of hello world!
+周五上午11:19
+
+AAAA 这是远端更新内容 v0.3.0
