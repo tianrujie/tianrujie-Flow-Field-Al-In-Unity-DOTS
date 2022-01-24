@@ -5,6 +5,7 @@ bin-release/
 [Bb]in/
 FlowField/FlowField/Library/
 FlowField/FlowField/Temp/
+FlowField/FlowField/Logs/
 
 # Other files and folders
 .settings/
