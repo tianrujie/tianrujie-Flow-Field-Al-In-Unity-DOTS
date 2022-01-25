@@ -8,6 +8,8 @@ using Unity.Transforms;
 namespace TMG.ECSFlowField
 {
     // ReSharper disable once ClassNeverInstantiated.Global
+    
+    [AlwaysUpdateSystem]
     public class EntityMovementSystem : SystemBase
     {
         public static EntityMovementSystem instance;
@@ -74,7 +76,7 @@ namespace TMG.ECSFlowField
                 float finalMoveSpeed = (entityMovementData.destinationReached ? entityMovementData.destinationMoveSpeed : entityMovementData.moveSpeed) * deltaTime;
                 
                 physVelocity.Linear.xz = moveDirection * finalMoveSpeed;
-                //translation.Value.y = 0f;
+                translation.Value.y = 0f;
 
             }).ScheduleParallel(jobHandle);
             jobHandle.Complete();

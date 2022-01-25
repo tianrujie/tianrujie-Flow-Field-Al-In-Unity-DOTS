@@ -3,6 +3,7 @@ using Unity.Mathematics;
 
 namespace TMG.ECSFlowField
 {
+	[AlwaysUpdateSystem]
 	public class InitializeFlowFieldGridSystem : SystemBase
 	{
 		private EntityCommandBufferSystem _ecbSystem;

@@ -2,6 +2,7 @@ using Unity.Entities;
 
 namespace TMG.ECSFlowField
 {
+    [AlwaysUpdateSystem]
     public class CompleteFlowFieldSystem : SystemBase
     {
         private EntityCommandBufferSystem _ecbSystem;

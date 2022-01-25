@@ -2,6 +2,7 @@
 
 namespace TMG.ECSFlowField
 {
+	[AlwaysUpdateSystem]
 	public class AddToDebugSystem : SystemBase
 	{
 		private EntityCommandBufferSystem _ecbSystem;

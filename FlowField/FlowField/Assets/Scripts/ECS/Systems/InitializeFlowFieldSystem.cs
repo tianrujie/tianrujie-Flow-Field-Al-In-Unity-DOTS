@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace TMG.ECSFlowField
 {
+	[AlwaysUpdateSystem]
 	public class InitializeFlowFieldSystem : SystemBase
 	{
 		private Entity _flowFieldEntity;

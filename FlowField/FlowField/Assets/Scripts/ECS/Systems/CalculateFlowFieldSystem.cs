@@ -4,6 +4,7 @@ using Unity.Mathematics;
 
 namespace TMG.ECSFlowField
 {
+	[AlwaysUpdateSystem]
 	public class CalculateFlowFieldSystem : SystemBase
 	{
 		private EntityCommandBufferSystem _ecbSystem;
