@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$USER_HOME$/Library/Unity/cache/packages/packages.unity.com/com.unity.burst@1.2.3" />
+    <content url="file://$USER_HOME$/Library/Unity/cache/packages/packages.unity.com/com.unity.collections@0.1.1-preview" />
+    <content url="file://$USER_HOME$/Library/Unity/cache/packages/packages.unity.com/com.unity.entities@0.1.1-preview" />
+    <content url="file://$USER_HOME$/Library/Unity/cache/packages/packages.unity.com/com.unity.jobs@0.1.1-preview" />
+    <content url="file://$USER_HOME$/Library/Unity/cache/packages/packages.unity.com/com.unity.properties@0.6.2-preview" />
+    <content url="file://$USER_HOME$/Library/Unity/cache/packages/packages.unity.com/com.unity.test-framework.performance@1.0.9-preview" />
+    <content url="file://$MODULE_DIR$/../.." />
+    <content url="file://$MODULE_DIR$/../../../Package/com.unity.physics@0.2.4-preview" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
