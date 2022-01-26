@@ -1,8 +1,10 @@
 ﻿using Unity.Entities;
-
 namespace TMG.ECSFlowField
 {
-	[AlwaysUpdateSystem]
+#if ENABLE_FLOW_FIELD_OLD
+[AlwaysUpdateSystem]
+#endif
+	[DisableAutoCreation]
 	public class AddToDebugSystem : SystemBase
 	{
 		private EntityCommandBufferSystem _ecbSystem;

@@ -9,7 +9,10 @@ namespace TMG.ECSFlowField
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     
-    [AlwaysUpdateSystem]
+#if ENABLE_FLOW_FIELD_OLD
+	[AlwaysUpdateSystem]
+#endif
+    [DisableAutoCreation]
     public class EntityMovementSystem : SystemBase
     {
         public static EntityMovementSystem instance;

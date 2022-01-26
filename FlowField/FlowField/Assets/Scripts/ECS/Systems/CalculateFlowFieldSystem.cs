@@ -1,10 +1,14 @@
 ﻿using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace TMG.ECSFlowField
 {
+	#if ENABLE_FLOW_FIELD_OLD
 	[AlwaysUpdateSystem]
+	#endif
+	[DisableAutoCreation]
 	public class CalculateFlowFieldSystem : SystemBase
 	{
 		private EntityCommandBufferSystem _ecbSystem;
