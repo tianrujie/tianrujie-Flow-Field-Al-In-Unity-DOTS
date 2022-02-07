@@ -71,6 +71,7 @@ namespace TMG.ECSFlowField
                     
                     //update curnode best dir
                      var nei = Const1.Neighbours4Dir;
+                     
                      int leftCellIdx =
                          SharedDataContainer.Index2To1(curCellData.I_2T.x + nei[0].x, curCellData.I_2T.y + nei[0].y);
                      var leftCellDataBestCost = SharedDataContainer.IdxLegal(leftCellIdx) ? cellsData[leftCellIdx].BestCost : curCellData.BestCost;
@@ -86,12 +87,24 @@ namespace TMG.ECSFlowField
                      int bottomCellIdx =
                          SharedDataContainer.Index2To1(curCellData.I_2T.x + nei[3].x, curCellData.I_2T.y + nei[3].y);
                      var bottomCellDataBestCost = SharedDataContainer.IdxLegal(bottomCellIdx) ? cellsData[bottomCellIdx].BestCost : curCellData.BestCost;
-                    
+
                      if (curCellIdx != SharedDataContainer.TargetCell)
-                         curCellData.BestDir = new float2(leftCellDataBestCost - rightCellDataBestCost,
-                             topCellDataBestCost - bottomCellDataBestCost);
+                     {
+                         bool isCrossTCol = curCellData.I_2T.x == destination.I_2T.x;
+                         bool isCrossTRow = curCellData.I_2T.y == destination.I_2T.y;
+                         bool missLeftOrRight = leftCellIdx == -1 || rightCellIdx == -1;
+                         bool missTopOrBottom = topCellIdx == -1 || bottomCellIdx == -1;
+                         
+                         bool resetGradientX = isCrossTCol && missLeftOrRight;
+                         bool resetGradientY = isCrossTRow && missTopOrBottom;
+                         
+                         curCellData.BestDir = new float2( resetGradientX ? 0 :leftCellDataBestCost - rightCellDataBestCost,
+                             resetGradientY ? 0 :topCellDataBestCost - bottomCellDataBestCost);
+                     }
                      else
+                     {
                          curCellData.BestDir = float2.zero; 
+                     }
                      
                      cellsData[curCellIdx] = curCellData;
                 }
