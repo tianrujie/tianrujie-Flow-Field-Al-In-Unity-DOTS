@@ -28,7 +28,17 @@ public class Director : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButtonDown(0))
+        {
+            var worldPos = SharedDataContainer.TouchPos2WorldPointByLayer(Input.mousePosition,"Default");
+            Debug.Log($"Click World Pos: {worldPos}");
+            if (SharedDataContainer.WorldPos2Idx(worldPos, out var idx, out var idx2))
+            {
+                Debug.Log($"Clicked [{idx},{idx2}]");
+                SharedDataContainer.TargetCell = idx;
+                SharedDataContainer.TargetCellVersion++;
+            }
+        }
     }
 
     private void OnDestroy()

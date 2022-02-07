@@ -5,9 +5,11 @@ using UnityEngine;
 
 public struct CellData
 {
-    public byte Index;
+    public int Index;
+    public int2 I_2T;     //(x:col,y:row)
     public float2 WorldPos;
-    public byte Cost;
-    public byte BestCost;
+    public int Cost;
+    public int BestCost;
+    public int TargetCellVersion;
     public float2 BestDir;
 }

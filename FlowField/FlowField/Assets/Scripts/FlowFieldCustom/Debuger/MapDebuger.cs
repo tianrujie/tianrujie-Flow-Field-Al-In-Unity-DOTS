@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEditor;
 
 public class MapDebuger : MonoBehaviour
 {
@@ -26,16 +27,37 @@ public class MapDebuger : MonoBehaviour
             DrawGrid(Const1.MapCells,Color.red);
         }
 
+        GUIStyle style = new GUIStyle(GUI.skin.label) {alignment = TextAnchor.MiddleCenter};
+        
         switch (debugTarget)
         {
             case DebugTarget.Cost:
                 
                 break;
             case DebugTarget.BestCost:
-                
+                for (int idx = 0; idx < Const1.MapCells.x * Const1.MapCells.y; idx++)
+                {
+                    var cellData = SharedDataContainer.Cells[idx];
+                    Handles.Label( new Vector3(cellData.WorldPos.x,0,cellData.WorldPos.y), cellData.BestCost.ToString(), style);
+                }
+               
                 break;
             case DebugTarget.BestDirection:
-                
+                for (int idx = 0; idx < Const1.MapCells.x * Const1.MapCells.y; idx++)
+                {
+                    var cellData = SharedDataContainer.Cells[idx];
+                    var center3T = new Vector3(cellData.WorldPos.x,0,cellData.WorldPos.y);
+                    var bDir = ((Vector2)cellData.BestDir).normalized;
+                    Handles.Label( center3T, cellData.BestCost.ToString(), style);
+                    
+                    var dir3T = new Vector3(bDir.x,0,-bDir.y);
+                    var offset = dir3T.normalized * Const1.MapCellSize / 2;
+                    
+                    var pos1 = center3T + offset;
+                    var pos2 = center3T; //- offset / 2
+                    Handles.DrawLine(pos2 ,pos1, 1);
+                    //Handles.DrawDottedLine(pos1, pos2,2);
+                }
                 break;
             case DebugTarget.CostHeatMap:
                 
@@ -49,9 +71,9 @@ public class MapDebuger : MonoBehaviour
     private void DrawGrid(int2 drawGridSize, Color drawColor)
     {
         Gizmos.color = drawColor;
-        for (byte col = 0; col < drawGridSize.x; col++)
+        for (byte row = 0; row < drawGridSize.y; row++)
         {
-            for (byte row = 0; row < drawGridSize.y; row++)
+            for (byte col = 0; col < drawGridSize.x; col++)
             {
                 Vector3 center = SharedDataContainer.WorldPos(col,row);
                 Vector3 size = Vector3.one * Const1.MapCellSize;
