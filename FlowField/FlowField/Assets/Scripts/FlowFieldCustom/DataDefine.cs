@@ -12,4 +12,5 @@ public struct CellData
     public int BestCost;
     public int TargetCellVersion;
     public float2 BestDir;
+    public bool IsBlock;
 }

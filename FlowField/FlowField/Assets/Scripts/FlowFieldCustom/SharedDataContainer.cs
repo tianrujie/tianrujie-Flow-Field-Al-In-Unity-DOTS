@@ -9,6 +9,7 @@ using Unity.Mathematics;
 public static class SharedDataContainer 
 {
     public static NativeHashMap<int,CellData> Cells;
+    public static Dictionary<int, Transform> BlocksShow;
     public static int TargetCell;
     public static int TargetCellVersion;
     
@@ -16,6 +17,7 @@ public static class SharedDataContainer
     {
         //@todo NativeHashMap`s write use memcopy, it`s too expensive,maybe we need try native array?
         Cells = new NativeHashMap<int, CellData>(Const1.MapRange.x * Const1.MapRange.y, Allocator.Persistent);
+        BlocksShow = new Dictionary<int, Transform>();
         TargetCell = 0;
         TargetCellVersion = 0;
     }
@@ -102,6 +104,18 @@ public static class SharedDataContainer
     {
         if (Cells.IsCreated)
             Cells.Dispose();
+    }
+
+    public static void ClearBlock()
+    {
+        foreach (var block in BlocksShow)
+        {
+            var cellData = Cells[block.Key];
+            cellData.IsBlock = false;
+            Cells[block.Key] = cellData;
+            GameObject.Destroy(block.Value.gameObject);
+        }
+        BlocksShow.Clear();
     }
     
     public static Vector3 TouchPos2WorldPoint(Vector3 mousePos)

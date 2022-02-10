@@ -520,6 +520,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a1c2c3cc6e4466590d6f719f50bebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _blockPrefab: {fileID: 7773632274495424004, guid: b06f234ea816742afa88616006dac4c5,
+    type: 3}
 --- !u!1 &1362205500
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,5 +595,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e7da8d06f1b141208f56a4a1b9f6e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugTarget: 3
+  debugTarget: 2
   drawGrid: 1

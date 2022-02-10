@@ -30,8 +30,11 @@ namespace TMG.ECSFlowField
             _entityManager.AddComponent<EntityMovementData>(_entityPrefab);
             _unitsInGame = new List<Entity>();
         }
+        
+        private bool _leftTabDown = false;
         private void Update()
         {
+            //generate agents
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 EntityMovementData newEntityMovementData = new EntityMovementData
@@ -50,6 +53,7 @@ namespace TMG.ECSFlowField
                 }
             }
 
+            //clear agents
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 foreach (Entity entity in _unitsInGame)
@@ -59,7 +63,7 @@ namespace TMG.ECSFlowField
                 _unitsInGame.Clear();
             }
         }
-
+        
         private void OnDestroy()
         {
             _blobAssetStore.Dispose();        

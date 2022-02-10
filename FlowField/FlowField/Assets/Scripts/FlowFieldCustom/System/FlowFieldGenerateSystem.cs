@@ -54,6 +54,10 @@ namespace TMG.ECSFlowField
                         var neighbourIdx = neighbours[i];
                         var neighbourData = cellsData[neighbourIdx];
                         
+                        //Block不进行遍历
+                        if (neighbourData.IsBlock)
+                            continue;
+                        
                         //更换目标后重置BestCost
                         if (neighbourData.TargetCellVersion != SharedDataContainer.TargetCellVersion)
                         {

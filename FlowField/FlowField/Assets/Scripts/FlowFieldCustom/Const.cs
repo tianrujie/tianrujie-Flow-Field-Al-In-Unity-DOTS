@@ -27,4 +27,8 @@ public static class Const1
         new int2(1,-1),
         new int2(1,1),
     };
+
+
+    public static int BlockCost = 256;
+
 }

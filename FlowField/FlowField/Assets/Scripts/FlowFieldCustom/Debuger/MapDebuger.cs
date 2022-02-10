@@ -38,6 +38,8 @@ public class MapDebuger : MonoBehaviour
                 for (int idx = 0; idx < Const1.MapCells.x * Const1.MapCells.y; idx++)
                 {
                     var cellData = SharedDataContainer.Cells[idx];
+                    if (cellData.IsBlock)
+                        continue;
                     Handles.Label( new Vector3(cellData.WorldPos.x,0,cellData.WorldPos.y), cellData.BestCost.ToString(), style);
                 }
                
@@ -46,6 +48,8 @@ public class MapDebuger : MonoBehaviour
                 for (int idx = 0; idx < Const1.MapCells.x * Const1.MapCells.y; idx++)
                 {
                     var cellData = SharedDataContainer.Cells[idx];
+                    if (cellData.IsBlock)
+                        continue;
                     var center3T = new Vector3(cellData.WorldPos.x,0,cellData.WorldPos.y);
                     var bDir = ((Vector2)cellData.BestDir).normalized;
                     Handles.Label( center3T, cellData.BestCost.ToString(), style);
