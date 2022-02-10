@@ -135,7 +135,7 @@ public static class SharedDataContainer
 
     public static Vector3 TouchPos2WorldPointByLayer(Vector3 mousePos, string layerName)
     {
-        Vector3 worldPos = Vector3.zero;
+        Vector3 worldPos = Vector3.positiveInfinity;
         layerGroup[0] = layerName;
         var ray = Camera.main.ScreenPointToRay(mousePos);
         int target = LayerMask.GetMask(layerGroup);

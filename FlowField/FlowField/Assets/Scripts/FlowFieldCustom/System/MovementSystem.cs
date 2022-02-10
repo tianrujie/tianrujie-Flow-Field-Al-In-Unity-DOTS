@@ -39,8 +39,10 @@ namespace TMG.ECSFlowField
                 var cellData = SharedDataContainer.Cells[idx1];
                 var bDir = ((Vector2)cellData.BestDir).normalized;
                 var dir3T = new Vector3(bDir.x,0,-bDir.y).normalized;
+                dir3T = Vector3.Lerp(entityMovementData.curSpeed,dir3T, 0.2f);
                 var expectPos = Util.ClampPos(translation.Value + (float3) dir3T * entityMovementData.moveSpeed * deltaTime);
                 translation.Value = expectPos;
+                entityMovementData.curSpeed = dir3T;
             }).ScheduleParallel();
 
             //EntityCommandBuffer commandBuffer = _ecbSystem.CreateCommandBuffer();

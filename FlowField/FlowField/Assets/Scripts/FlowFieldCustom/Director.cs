@@ -31,10 +31,20 @@ public class Director : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            int a = 8;
+            int b = 1 << 3;
+            Debug.Log(a&b);
+            
             var worldPos = SharedDataContainer.TouchPos2WorldPointByLayer(Input.mousePosition,"Default");
             Debug.Log($"Click World Pos: {worldPos}");
+            if (!SharedDataContainer.PosLegal(worldPos))
+                return;
+            
             if (SharedDataContainer.WorldPos2Idx(worldPos, out var idx, out var idx2))
             {
+                if(SharedDataContainer.Cells[idx].IsBlock)
+                    return;
+                
                 Debug.Log($"Clicked [{idx},{idx2}]");
                 SharedDataContainer.TargetCell = idx;
                 SharedDataContainer.TargetCellVersion++;
@@ -52,7 +62,7 @@ public class Director : MonoBehaviour
                 {
                     Debug.Log($"Clicked [{idx},{idx2}] and Clear Block");
                     cellData.IsBlock = false;
-                    cellData.BestCost = Const1.BlockCost;
+                    cellData.BestCost = int.MaxValue;
                     if (SharedDataContainer.BlocksShow.TryGetValue(idx, out var b))
                     {
                         Destroy(b.gameObject);
@@ -63,7 +73,7 @@ public class Director : MonoBehaviour
                 {
                     Debug.Log($"Clicked [{idx},{idx2}] and Set Block");
                     cellData.IsBlock = true;
-                    cellData.BestCost = int.MaxValue;
+                    cellData.BestCost = Const1.BlockCost;
                     var blockObj = GameObject.Instantiate(_blockPrefab);
                     blockObj.name = $"Block[{idx},{idx2}]";
                     blockObj.transform.position = new Vector3(cellData.WorldPos.x,0,cellData.WorldPos.y);

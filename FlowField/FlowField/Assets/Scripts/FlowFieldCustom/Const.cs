@@ -31,4 +31,8 @@ public static class Const1
 
     public static int BlockCost = 256;
 
+    public static int BL = 1;
+    public static int BR = 1<<1;
+    public static int BT = 1<<2;
+    public static int BB = 1<<3;
 }

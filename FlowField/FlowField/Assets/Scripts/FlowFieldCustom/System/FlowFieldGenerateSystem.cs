@@ -75,35 +75,47 @@ namespace TMG.ECSFlowField
                     
                     //update curnode best dir
                      var nei = Const1.Neighbours4Dir;
-                     
+                     int blockState = 0;
                      int leftCellIdx =
                          SharedDataContainer.Index2To1(curCellData.I_2T.x + nei[0].x, curCellData.I_2T.y + nei[0].y);
                      var leftCellDataBestCost = SharedDataContainer.IdxLegal(leftCellIdx) ? cellsData[leftCellIdx].BestCost : curCellData.BestCost;
-                    
+                     if (AdaptBlock(ref leftCellDataBestCost,curCellData.BestCost))
+                         blockState = blockState | Const1.BL;
+                     
                      int rightCellIdx =
                          SharedDataContainer.Index2To1(curCellData.I_2T.x + nei[1].x, curCellData.I_2T.y + nei[1].y);
                      var rightCellDataBestCost = SharedDataContainer.IdxLegal(rightCellIdx) ? cellsData[rightCellIdx].BestCost : curCellData.BestCost;
-                    
+                     if (AdaptBlock(ref rightCellDataBestCost, curCellData.BestCost))
+                         blockState = blockState | Const1.BR;
+                     
                      int topCellIdx =
                          SharedDataContainer.Index2To1(curCellData.I_2T.x + nei[2].x, curCellData.I_2T.y + nei[2].y);
                      var topCellDataBestCost = SharedDataContainer.IdxLegal(topCellIdx) ? cellsData[topCellIdx].BestCost : curCellData.BestCost;
-                    
+                     if (AdaptBlock(ref topCellDataBestCost, curCellData.BestCost))
+                         blockState = blockState | Const1.BT;
+                     
                      int bottomCellIdx =
                          SharedDataContainer.Index2To1(curCellData.I_2T.x + nei[3].x, curCellData.I_2T.y + nei[3].y);
                      var bottomCellDataBestCost = SharedDataContainer.IdxLegal(bottomCellIdx) ? cellsData[bottomCellIdx].BestCost : curCellData.BestCost;
-
+                     if (AdaptBlock(ref bottomCellDataBestCost, curCellData.BestCost))
+                         blockState = blockState | Const1.BB;
+                     
                      if (curCellIdx != SharedDataContainer.TargetCell)
                      {
+                         //与目标点十字交叉的地图边界点,舍弃丢失边界方向的速度计算
+                         //其余地图边界点丢失方向BestCost取curCellData.BestCost
                          bool isCrossTCol = curCellData.I_2T.x == destination.I_2T.x;
                          bool isCrossTRow = curCellData.I_2T.y == destination.I_2T.y;
                          bool missLeftOrRight = leftCellIdx == -1 || rightCellIdx == -1;
                          bool missTopOrBottom = topCellIdx == -1 || bottomCellIdx == -1;
                          
-                         bool resetGradientX = isCrossTCol && missLeftOrRight;
-                         bool resetGradientY = isCrossTRow && missTopOrBottom;
-                         
+                         bool resetGradientX = (isCrossTCol && missLeftOrRight);
+                         bool resetGradientY = (isCrossTRow && missTopOrBottom);
+                                                                                     
                          curCellData.BestDir = new float2( resetGradientX ? 0 :leftCellDataBestCost - rightCellDataBestCost,
                              resetGradientY ? 0 :topCellDataBestCost - bottomCellDataBestCost);
+                         
+                         OptimizeBlockDir(ref curCellData.BestDir,blockState);
                      }
                      else
                      {
@@ -114,42 +126,49 @@ namespace TMG.ECSFlowField
                 }
             }
             
-            
-            //Update Cell`s Best Dir
-            // for (int idx = 0; idx < Const1.MapCells.x * Const1.MapCells.y; idx++)
-            // {
-            //     var curCellData = cellsData[idx];
-            //     var nei = Const1.Neighbours4Dir;
-            //
-            //     int leftCellIdx =
-            //         SharedDataContainer.Index2To1(curCellData.I_2T.x + nei[0].x, curCellData.I_2T.y + nei[0].y);
-            //     var leftCellData = SharedDataContainer.IdxLegal(leftCellIdx) ? cellsData[leftCellIdx] : curCellData;
-            //     
-            //     int rightCellIdx =
-            //         SharedDataContainer.Index2To1(curCellData.I_2T.x + nei[1].x, curCellData.I_2T.y + nei[1].y);
-            //     var rightCellData = SharedDataContainer.IdxLegal(rightCellIdx) ? cellsData[rightCellIdx] : curCellData;
-            //     
-            //     int topCellIdx =
-            //         SharedDataContainer.Index2To1(curCellData.I_2T.x + nei[2].x, curCellData.I_2T.y + nei[2].y);
-            //     var topCellData = SharedDataContainer.IdxLegal(topCellIdx) ? cellsData[topCellIdx] : curCellData;
-            //     
-            //     int bottomCellIdx =
-            //         SharedDataContainer.Index2To1(curCellData.I_2T.x + nei[3].x, curCellData.I_2T.y + nei[3].y);
-            //     var bottomCellData = SharedDataContainer.IdxLegal(bottomCellIdx) ? cellsData[bottomCellIdx] : curCellData;
-            //     
-            //     curCellData.BestDir = new float2(leftCellData.BestCost - rightCellData.BestCost,
-            //         topCellData.BestCost - bottomCellData.BestCost);
-            //
-            //     cellsData[idx] = curCellData;
-            // }
-           
-            
             //EntityCommandBuffer commandBuffer = _ecbSystem.CreateCommandBuffer();
             // Entities.ForEach((Entity entity) =>
             // {
             //     GridDebug.instance.AddToList(cellData);
             //     commandBuffer.RemoveComponent<AddToDebugTag>(entity);
             // }).Run();
+        }
+
+        /// <summary>
+        /// 相邻Cell为阻挡的情况下，该方向邻居的BestCost使用CurNode填充
+        /// </summary>
+        /// <param name="cost"></param>
+        /// <param name="curNodeBestCost"></param>
+        private bool AdaptBlock(ref int cost, int curNodeBestCost)
+        {
+            if (cost == Const1.BlockCost)
+
+            {
+                cost = curNodeBestCost;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 移除BestDir在Block方向上的速度分量
+        /// </summary>
+        /// <param name="bestDir"></param>
+        /// <param name="bl"></param>
+        private void OptimizeBlockDir(ref float2 bestDir, int bl)
+        {
+            if ((bl & Const1.BL) != 0 && bestDir.x < 0)
+                bestDir.x = 0;
+            
+            if ((bl & Const1.BR) != 0 && bestDir.x > 0)
+                bestDir.x = 0;
+
+            if ((bl & Const1.BT) != 0 && bestDir.y < 0)
+                bestDir.y = 0;
+            
+            if ((bl & Const1.BB) != 0 && bestDir.y > 0)
+                bestDir.y = 0;
         }
 
         protected override void OnDestroy()

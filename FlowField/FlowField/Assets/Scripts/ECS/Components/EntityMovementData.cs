@@ -1,4 +1,5 @@
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace TMG.ECSFlowField
 {
@@ -7,5 +8,6 @@ namespace TMG.ECSFlowField
         public float moveSpeed;
         public float destinationMoveSpeed;
         public bool destinationReached;
+        public float3 curSpeed;
     }
 }

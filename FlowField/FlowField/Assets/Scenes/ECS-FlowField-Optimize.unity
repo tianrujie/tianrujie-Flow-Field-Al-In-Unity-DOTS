@@ -152,9 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b9f9b0e157495995e8c485f6958bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitPrefab: {fileID: 8270838439448413405, guid: b74e37c4fa0e043b083e915b9eb69b50,
+  _unitPrefab: {fileID: 4912652515374104168, guid: 2a7636a8714d848d49a6adb4b585d864,
     type: 3}
-  _numUnitsPerSpawn: 10
+  _numUnitsPerSpawn: 50
   _maxSpawnPos:
     x: 100
     y: 50
@@ -595,5 +595,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e7da8d06f1b141208f56a4a1b9f6e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugTarget: 2
+  debugTarget: 3
   drawGrid: 1
