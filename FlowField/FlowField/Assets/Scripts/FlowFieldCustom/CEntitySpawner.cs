@@ -37,19 +37,27 @@ namespace TMG.ECSFlowField
             //generate agents
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                EntityMovementData newEntityMovementData = new EntityMovementData
+                MovementData newEntityMovementData = new MovementData
                     {
                         moveSpeed = _moveSpeed,
                         destinationReached = false,
                         destinationMoveSpeed = _destinationMoveSpeed
                     };
+                
+                AgentData agentData = new AgentData()
+                {
+                     Camp = Const1.CAMP_A,
+                     Radius = 0.5f,
+                };
+        
                 for (int i = 0; i < _numUnitsPerSpawn; i++)
                 {
                     var newUnit = _entityManager.Instantiate(_entityPrefab);
-                    _entityManager.SetComponentData(newUnit, newEntityMovementData);
+                    _entityManager.AddComponentData(newUnit, newEntityMovementData);
                     _unitsInGame.Add(newUnit);
                     float3 newPosition = new float3(Random.Range(-_maxSpawnPos.x, _maxSpawnPos.x), 0, Random.Range(-_maxSpawnPos.y, _maxSpawnPos.y));
                     _entityManager.SetComponentData(newUnit, new Translation {Value = newPosition});
+                    _entityManager.AddComponentData(newUnit,agentData);
                 }
             }
 

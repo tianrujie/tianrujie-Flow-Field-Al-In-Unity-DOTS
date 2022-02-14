@@ -2,13 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMG.ECSFlowField;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Director : MonoBehaviour
 {
     private static Director _director;
     [SerializeField] private GameObject _blockPrefab;
-
+    [SerializeField] private GameObject _destiPrefab;
+    private GameObject destiObj;
     public static Director Instance
     {
         get { return _director; }
@@ -19,6 +21,8 @@ public class Director : MonoBehaviour
         SharedDataContainer.Init();
         SharedDataContainer.InitMapGrid();
         ArchyType.Initalize();
+        destiObj = GameObject.Instantiate(_destiPrefab,transform);
+        SyncDestiPos(SharedDataContainer.Cells[SharedDataContainer.TargetCell].WorldPos);
     }
 
     // Start is called before the first frame update
@@ -48,6 +52,7 @@ public class Director : MonoBehaviour
                 Debug.Log($"Clicked [{idx},{idx2}]");
                 SharedDataContainer.TargetCell = idx;
                 SharedDataContainer.TargetCellVersion++;
+                SyncDestiPos(SharedDataContainer.Cells[idx].WorldPos);
             }
         }
         
@@ -94,6 +99,11 @@ public class Director : MonoBehaviour
         }
     }
 
+    void SyncDestiPos(float2 pos)
+    {
+        destiObj.transform.position = new Vector3(pos.x,0,pos.y);
+    }
+    
     private void OnDestroy()
     {
         SharedDataContainer.Clear();

@@ -10,6 +10,7 @@ public static class SharedDataContainer
 {
     public static NativeHashMap<int,CellData> Cells;
     public static Dictionary<int, Transform> BlocksShow;
+    public static NativeList<BlockItem>[][] Blocks;
     public static int TargetCell;
     public static int TargetCellVersion;
     
@@ -20,6 +21,7 @@ public static class SharedDataContainer
         BlocksShow = new Dictionary<int, Transform>();
         TargetCell = 0;
         TargetCellVersion = 0;
+        
     }
     
     public static void InitMapGrid()
@@ -37,6 +39,16 @@ public static class SharedDataContainer
                 cell.BestCost = int.MaxValue;
                 cell.TargetCellVersion = 0;
                 Cells.TryAdd(index,cell);
+            }
+        }
+        
+        Blocks = new NativeList<BlockItem>[2][];
+        for (var i = 0; i < Blocks.Length; i++)
+        {
+            Blocks[i] = new NativeList<BlockItem>[Const1.NumBlocks];
+            for (var j = 0; j < Const1.NumBlocks; j++)
+            {
+                Blocks[i][j] = new NativeList<BlockItem>(4, Allocator.Persistent);
             }
         }
     }
@@ -104,6 +116,18 @@ public static class SharedDataContainer
     {
         if (Cells.IsCreated)
             Cells.Dispose();
+        
+        if (Blocks != null)
+        {
+            for (var i = 0; i < Blocks.Length; i++)
+            {
+                for (var j = 0; j < Const1.NumBlocks; j++)
+                {
+                    if( Blocks[i][j].IsCreated)
+                        Blocks[i][j].Dispose();
+                }
+            }
+        }
     }
 
     public static void ClearBlock()
