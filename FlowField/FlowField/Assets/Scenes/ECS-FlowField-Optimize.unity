@@ -154,11 +154,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unitPrefab: {fileID: 4912652515374104168, guid: 2a7636a8714d848d49a6adb4b585d864,
     type: 3}
-  _numUnitsPerSpawn: 1
+  _numUnitsPerSpawn: 50
   _maxSpawnPos:
-    x: 3
-    y: 3
-  _moveSpeed: 8
+    x: 90
+    y: 45
+  _moveSpeed: 15
   _destinationMoveSpeed: 0.01
 --- !u!4 &13427643
 Transform:

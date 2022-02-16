@@ -32,7 +32,9 @@ public class RVO3System : JobComponentSystem
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
         var updateBlockJob = new UpdateBlocksJob();
-        var blockJobHandle = updateBlockJob.Schedule(this, inputDeps);
+        //there need to be ScheduleSingle, otherwise write SharedDataContainer.Blocks may cause Unity Crash 
+        var blockJobHandle = updateBlockJob.ScheduleSingle(this, inputDeps);
+        blockJobHandle.Complete();
         
         if (Time.DeltaTime < 0.0001f)
         {
@@ -225,7 +227,7 @@ public class RVO3System : JobComponentSystem
                 float radio = 0.01f;
                 
                 if (!movementData.destinationReached && !otherMvtData.destinationReached)
-                    radio = 1f;
+                    radio = 0.1f;
                 
                 if (!movementData.destinationReached && otherMvtData.destinationReached)
                     radio = 0.2f;
@@ -234,7 +236,7 @@ public class RVO3System : JobComponentSystem
                     radio = 0.0f;
                 
                 if (movementData.destinationReached && otherMvtData.destinationReached)
-                    radio = 1f;
+                    radio = 0.1f;
                 
                 float2 relativeVelocity = selfVel - otherVel;
                 float distSq = math.lengthsq(relativePosition);
