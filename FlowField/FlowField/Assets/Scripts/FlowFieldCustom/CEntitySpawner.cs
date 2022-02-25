@@ -12,6 +12,7 @@ namespace TMG.ECSFlowField
         [SerializeField] private GameObject _unitPrefab;
         [SerializeField] private int _numUnitsPerSpawn;
         [SerializeField] private float2 _maxSpawnPos;
+        [SerializeField] private float _agentRadius;
         [SerializeField] private float _moveSpeed;
         [SerializeField] private float _destinationMoveSpeed;
         
@@ -25,6 +26,7 @@ namespace TMG.ECSFlowField
         {
             _blobAssetStore = new BlobAssetStore();
             GameObjectConversionSettings settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, _blobAssetStore);
+            _unitPrefab.transform.localScale = new Vector3(_agentRadius*2,_agentRadius*2,_agentRadius*2);
             _entityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(_unitPrefab, settings);
             _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             _entityManager.AddComponent<EntityMovementData>(_entityPrefab);
@@ -47,9 +49,10 @@ namespace TMG.ECSFlowField
                 AgentData agentData = new AgentData()
                 {
                      Camp = Const1.CAMP_A,
-                     Radius = 0.5f,
+                     Radius = _agentRadius,
                 };
         
+                FlowFieldTag tag = new FlowFieldTag();
                 for (int i = 0; i < _numUnitsPerSpawn; i++)
                 {
                     var newUnit = _entityManager.Instantiate(_entityPrefab);
@@ -58,6 +61,7 @@ namespace TMG.ECSFlowField
                     float3 newPosition = new float3(Random.Range(-_maxSpawnPos.x, _maxSpawnPos.x), 0, Random.Range(-_maxSpawnPos.y, _maxSpawnPos.y));
                     _entityManager.SetComponentData(newUnit, new Translation {Value = newPosition});
                     _entityManager.AddComponentData(newUnit,agentData);
+                    _entityManager.AddComponentData(newUnit,tag);
                 }
             }
 

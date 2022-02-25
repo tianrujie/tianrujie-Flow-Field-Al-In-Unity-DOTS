@@ -158,6 +158,7 @@ MonoBehaviour:
   _maxSpawnPos:
     x: 90
     y: 45
+  _agentRadius: 2
   _moveSpeed: 15
   _destinationMoveSpeed: 0.01
 --- !u!4 &13427643

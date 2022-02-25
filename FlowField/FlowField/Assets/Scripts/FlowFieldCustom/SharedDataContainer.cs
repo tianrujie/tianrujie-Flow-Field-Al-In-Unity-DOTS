@@ -21,7 +21,6 @@ public static class SharedDataContainer
         BlocksShow = new Dictionary<int, Transform>();
         TargetCell = 0;
         TargetCellVersion = 0;
-        
     }
     
     public static void InitMapGrid()
@@ -41,7 +40,13 @@ public static class SharedDataContainer
                 Cells.TryAdd(index,cell);
             }
         }
-        
+
+        InitBlocks();
+    }
+
+
+    public static void InitBlocks()
+    {
         Blocks = new NativeList<BlockItem>[2][];
         for (var i = 0; i < Blocks.Length; i++)
         {
@@ -52,7 +57,6 @@ public static class SharedDataContainer
             }
         }
     }
-
     public static int Index2To1(int col, int row)
     {
         if (col < 0 || col >= Const1.MapCells.x || row < 0 || row >= Const1.MapCells.y)
@@ -132,6 +136,9 @@ public static class SharedDataContainer
 
     public static void ClearBlock()
     {
+        if(BlocksShow == null)
+            return;
+        
         foreach (var block in BlocksShow)
         {
             var cellData = Cells[block.Key];

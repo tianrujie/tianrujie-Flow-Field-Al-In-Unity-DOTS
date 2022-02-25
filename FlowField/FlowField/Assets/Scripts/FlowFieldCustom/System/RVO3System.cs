@@ -146,7 +146,7 @@ public class RVO3System : JobComponentSystem
             return a.x * b.y - a.y * b.x;
         }
 
-        void findNearestNeighbors(Entity entity, float2 pos, int blockIdx, ref FixedSizeList_10<KeyValuePair<float, Entity>> arr)
+        void findNearestNeighbors(Entity entity, float2 pos, int blockIdx, ref FixedSizeList_10<Entity> arr)
         {
             if (blockIdx < 0 || blockIdx >= Const1.NumBlocks)
             {
@@ -164,7 +164,7 @@ public class RVO3System : JobComponentSystem
                 for (var j = 0; j < ettPosList.Length; j++)
                 {
                     var ettPos = ettPosList[j];
-                    if (ettPos.Entity == entity)
+                    if (ettPos.Entity == entity || arr.Contains(ettPos.Entity))
                     {
                         continue;
                     }
@@ -172,10 +172,11 @@ public class RVO3System : JobComponentSystem
                     if (!agentDataFromEntity.Exists(entity) || !agentDataFromEntity.Exists(ettPos.Entity))
                         continue;
                     var r = agentDataFromEntity[entity].Radius + agentDataFromEntity[ettPos.Entity].Radius;
+                    r *= 10;
                     var dsq = math.lengthsq(ettPos.Pos - pos);
                     if (dsq < r * r)
                     {
-                        arr.Add(new KeyValuePair<float, Entity>(dsq, ettPos.Entity));
+                        arr.Add(ettPos.Entity);
                         if (arr.Length == arr.Capacity)
                         {
                             return;
@@ -201,7 +202,7 @@ public class RVO3System : JobComponentSystem
 
             var pos = translation.Value.xz;
             var selfBlockCenter = Util.GetBlockCenter(pos);
-            var arr = new FixedSizeList_10<KeyValuePair<float, Entity>>();
+            var arr = new FixedSizeList_10<Entity>();
             for (var i = 0; i < Const1.BlockCloseNeighbors.Length; i++)
             {
                 var blockCenter = selfBlockCenter + Const1.BlockCloseNeighbors[i];
@@ -217,27 +218,28 @@ public class RVO3System : JobComponentSystem
             /* Create agent ORCA lines. */
             for (int i = 0; i < arr.Length; ++i)
             {
-                var otherIndex = arr[i].Value;
+                var otherIndex = arr[i];
 
                 float2 relativePosition = (posDataFromEntity[otherIndex].Value - translation.Value).xz;
                 var otherMvtData = movementDataFromEntity[otherIndex];
 
                 float2 otherVel = otherMvtData.curSpeed;
                 float2 selfVel = movementData.curSpeed;
-                float radio = 0.01f;
+                //float radio = 0.01f;
                 
-                if (!movementData.destinationReached && !otherMvtData.destinationReached)
-                    radio = 0.1f;
+                // if (!movementData.destinationReached && !otherMvtData.destinationReached)
+                //     radio = 0.1f;
+                //
+                // if (!movementData.destinationReached && otherMvtData.destinationReached)
+                //     radio = 0.2f;
+                //
+                // if (movementData.destinationReached && !otherMvtData.destinationReached)
+                //     radio = 0.0f;
+                //
+                // if (movementData.destinationReached && otherMvtData.destinationReached)
+                //     radio = 0.1f;
                 
-                if (!movementData.destinationReached && otherMvtData.destinationReached)
-                    radio = 0.2f;
-                
-                if (movementData.destinationReached && !otherMvtData.destinationReached)
-                    radio = 0.0f;
-                
-                if (movementData.destinationReached && otherMvtData.destinationReached)
-                    radio = 0.1f;
-                
+                float radio = 0.5f;
                 float2 relativeVelocity = selfVel - otherVel;
                 float distSq = math.lengthsq(relativePosition);
                 float combinedRadius = agentData.Radius + agentDataFromEntity[otherIndex].Radius;

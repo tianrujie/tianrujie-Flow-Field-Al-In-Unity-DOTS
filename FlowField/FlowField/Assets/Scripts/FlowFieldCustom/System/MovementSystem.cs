@@ -14,7 +14,7 @@ namespace TMG.ECSFlowField
         protected override void OnCreate()
         {
             _ecbSystem = World.GetOrCreateSystem<EntityCommandBufferSystem>();
-            _query = GetEntityQuery(typeof(MovementData), typeof(Translation), typeof(Rotation));
+            _query = GetEntityQuery(typeof(MovementData), typeof(Translation), typeof(Rotation),typeof(FlowFieldTag));
         }
 
         protected override void OnUpdate()
@@ -22,7 +22,7 @@ namespace TMG.ECSFlowField
             var deltaTime = Time.DeltaTime;
             var destiPos2 = SharedDataContainer.Cells[SharedDataContainer.TargetCell].WorldPos;
             var destPos = new float3(destiPos2.x,0,destiPos2.y);
-            Entities.ForEach((Entity entity, ref MovementData entityMovementData, ref Translation translation, ref Rotation rotation) =>
+            Entities.WithAll<FlowFieldTag>().ForEach((Entity entity, ref MovementData entityMovementData, ref Translation translation, ref Rotation rotation) =>
             {
                 //Reset the target
                 if (entityMovementData.destinationVersion != SharedDataContainer.TargetCellVersion)
@@ -51,7 +51,7 @@ namespace TMG.ECSFlowField
                 var cellData = SharedDataContainer.Cells[idx1];
                 var bDir = ((Vector2)cellData.BestDir).normalized;
                 var dir3T = new Vector3(bDir.x,0,-bDir.y).normalized;
-                dir3T = Vector3.Lerp(new Vector3(entityMovementData.curSpeed.x,0,entityMovementData.curSpeed.y), dir3T, 0.8f);
+                //dir3T = Vector3.Lerp(new Vector3(entityMovementData.curSpeed.x,0,entityMovementData.curSpeed.y), dir3T, 0.8f);
                 var velocity = dir3T * entityMovementData.moveSpeed;
                 var expectPos = Util.ClampPos(translation.Value + (float3)velocity * deltaTime);
                 //translation.Value = expectPos;
