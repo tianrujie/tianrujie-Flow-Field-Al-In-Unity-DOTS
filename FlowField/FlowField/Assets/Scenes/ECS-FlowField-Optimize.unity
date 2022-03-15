@@ -154,11 +154,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unitPrefab: {fileID: 4912652515374104168, guid: 2a7636a8714d848d49a6adb4b585d864,
     type: 3}
+  _blockPrefab: {fileID: 4912652515374104168, guid: 7ec05cde4f73342ea8bbef5f5b8bb2b9,
+    type: 3}
   _numUnitsPerSpawn: 50
   _maxSpawnPos:
     x: 90
     y: 45
-  _agentRadius: 2
+  _agentRadius: 1
   _moveSpeed: 15
   _destinationMoveSpeed: 0.01
 --- !u!4 &13427643
@@ -525,6 +527,7 @@ MonoBehaviour:
     type: 3}
   _destiPrefab: {fileID: 4138798101625783996, guid: db95c6348c73c4a69bc5cb774846280d,
     type: 3}
+  Spawner: {fileID: 13427641}
 --- !u!1 &1362205500
 GameObject:
   m_ObjectHideFlags: 0

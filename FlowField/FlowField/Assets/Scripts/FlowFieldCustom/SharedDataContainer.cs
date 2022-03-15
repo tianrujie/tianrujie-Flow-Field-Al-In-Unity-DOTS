@@ -10,6 +10,7 @@ public static class SharedDataContainer
 {
     public static NativeHashMap<int,CellData> Cells;
     public static Dictionary<int, Transform> BlocksShow;
+    public static Dictionary<int, Entity> BlocksEntity;
     public static NativeList<BlockItem>[][] Blocks;
     public static int TargetCell;
     public static int TargetCellVersion;
@@ -19,6 +20,7 @@ public static class SharedDataContainer
         //@todo NativeHashMap`s write use memcopy, it`s too expensive,maybe we need try native array?
         Cells = new NativeHashMap<int, CellData>(Const1.MapRange.x * Const1.MapRange.y, Allocator.Persistent);
         BlocksShow = new Dictionary<int, Transform>();
+        BlocksEntity = new Dictionary<int, Entity>();
         TargetCell = 0;
         TargetCellVersion = 0;
     }
@@ -147,6 +149,13 @@ public static class SharedDataContainer
             GameObject.Destroy(block.Value.gameObject);
         }
         BlocksShow.Clear();
+
+        var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        foreach (var bEntity in BlocksEntity)
+        {
+            entityManager.DestroyEntity(bEntity.Value);
+        }
+        BlocksEntity.Clear();
     }
     
     public static Vector3 TouchPos2WorldPoint(Vector3 mousePos)

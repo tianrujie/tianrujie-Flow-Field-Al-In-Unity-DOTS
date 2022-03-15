@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMG.ECSFlowField;
+using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class Director : MonoBehaviour
     private static Director _director;
     [SerializeField] private GameObject _blockPrefab;
     [SerializeField] private GameObject _destiPrefab;
+    public CEntitySpawner Spawner;
     private GameObject destiObj;
     public static Director Instance
     {
@@ -72,6 +74,10 @@ public class Director : MonoBehaviour
                     {
                         Destroy(b.gameObject);
                         SharedDataContainer.BlocksShow.Remove(idx);
+                        var bE = SharedDataContainer.BlocksEntity[idx];
+                        //remove BlockEntity
+                        World.DefaultGameObjectInjectionWorld.EntityManager.DestroyEntity(bE);
+                        SharedDataContainer.BlocksEntity.Remove(idx);
                     }
                 }
                 else
@@ -84,6 +90,8 @@ public class Director : MonoBehaviour
                     blockObj.transform.position = new Vector3(cellData.WorldPos.x,0,cellData.WorldPos.y);
                     blockObj.transform.localScale = new Vector3(Const1.MapCellSize,0.01f,Const1.MapCellSize);
                     SharedDataContainer.BlocksShow.Add(idx,blockObj.transform);
+                    // add BlockEntity
+                    Spawner.SpawnBlock(idx);
                 }
                     
                 SharedDataContainer.Cells[idx] = cellData;

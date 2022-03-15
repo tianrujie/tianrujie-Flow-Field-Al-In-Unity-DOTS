@@ -10,6 +10,7 @@ namespace TMG.ECSFlowField
     public class CEntitySpawner : MonoBehaviour
     {
         [SerializeField] private GameObject _unitPrefab;
+        [SerializeField] private GameObject _blockPrefab;
         [SerializeField] private int _numUnitsPerSpawn;
         [SerializeField] private float2 _maxSpawnPos;
         [SerializeField] private float _agentRadius;
@@ -17,6 +18,7 @@ namespace TMG.ECSFlowField
         [SerializeField] private float _destinationMoveSpeed;
         
         private Entity _entityPrefab;
+        private Entity _blockEntityPrefab;
         private EntityManager _entityManager;
         private List<Entity> _unitsInGame;
         private BlobAssetStore _blobAssetStore;
@@ -28,8 +30,10 @@ namespace TMG.ECSFlowField
             GameObjectConversionSettings settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, _blobAssetStore);
             _unitPrefab.transform.localScale = new Vector3(_agentRadius*2,_agentRadius*2,_agentRadius*2);
             _entityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(_unitPrefab, settings);
+            _blockEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(_blockPrefab, settings);
             _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             _entityManager.AddComponent<EntityMovementData>(_entityPrefab);
+            _entityManager.AddComponent<EntityMovementData>(_blockEntityPrefab);
             _unitsInGame = new List<Entity>();
         }
         
@@ -79,6 +83,31 @@ namespace TMG.ECSFlowField
         private void OnDestroy()
         {
             _blobAssetStore.Dispose();        
+        }
+
+        public void SpawnBlock(int idx)
+        {
+            MovementData newEntityMovementData = new MovementData
+            {
+                moveSpeed = 0,
+                destinationReached = false,
+                destinationMoveSpeed = 0
+            };
+                
+            AgentData agentData = new AgentData()
+            {
+                Camp = Const1.CAMP_A,
+                Radius = Const1.MapCellSize * 0.7f,
+            };
+        
+            FlowFieldTag tag = new FlowFieldTag();
+            var newUnit = _entityManager.Instantiate(_blockEntityPrefab);
+            _entityManager.AddComponentData(newUnit, newEntityMovementData);
+            var cellData = SharedDataContainer.Cells[idx];
+            _entityManager.SetComponentData(newUnit, new Translation {Value = new float3(cellData.WorldPos.x,0,cellData.WorldPos.y)});
+            _entityManager.AddComponentData(newUnit,agentData);
+            _entityManager.AddComponentData(newUnit,tag);
+            SharedDataContainer.BlocksEntity.Add(idx,newUnit);
         }
     }
 }
